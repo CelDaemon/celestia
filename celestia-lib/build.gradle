@@ -1,0 +1,15 @@
+plugins {
+    id 'java-library'
+}
+
+dependencies {
+    api project(':unsafe')
+}
+compileJava {
+    options.compilerArgs << '--enable-preview' << '-Xlint:-preview'
+}
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}

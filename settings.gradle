@@ -1,0 +1,6 @@
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+    }
+}
+include(':celestia-lib', ':unsafe', ':example')

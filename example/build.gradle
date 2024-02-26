@@ -1,0 +1,22 @@
+plugins {
+    id 'application'
+}
+
+dependencies {
+    implementation project(':celestia-lib')
+}
+application {
+    mainModule = "net.voidgroup.celestia_lib.example"
+    mainClass = "net.voidgroup.celestia_lib.example.Example"
+}
+compileJava {
+    options.compilerArgs << '--enable-preview' << '-Xlint:-preview'
+}
+application {
+    applicationDefaultJvmArgs = ['--enable-preview', '--enable-native-access=net.voidgroup.celestia_lib.unsafe']
+}
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}

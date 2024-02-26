@@ -1,0 +1,15 @@
+plugins {
+    id 'java-library'
+}
+
+dependencies {
+    compileOnlyApi "org.jetbrains:annotations:+"
+}
+compileJava {
+    options.compilerArgs << '--enable-preview' << '-Xlint:-preview'
+}
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
