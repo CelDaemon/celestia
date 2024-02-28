@@ -1,4 +1,4 @@
-package net.voidgroup.celestia_lib.unsafe;
+package net.voidgroup.celestia.unsafe;
 
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;

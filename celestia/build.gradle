@@ -2,17 +2,13 @@ plugins {
     id 'java-library'
     id 'maven-publish'
 }
-group = "net.voidgroup.celestia"
+
 dependencies {
+    implementation project(':unsafe')
     compileOnly "org.jetbrains:annotations:+"
 }
 compileJava {
     options.compilerArgs << '--enable-preview' << '-Xlint:-preview'
-}
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
 }
 publishing {
     repositories {
@@ -28,10 +24,16 @@ publishing {
     publications {
         main(MavenPublication) {
             groupId = 'net.voidgroup'
-            artifactId = 'celestia-unsafe'
+            artifactId = 'celestia'
             version = '1.0-SNAPSHOT'
 
             from components.java
         }
+    }
+}
+java {
+    withSourcesJar()
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }

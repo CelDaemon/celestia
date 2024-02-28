@@ -1,4 +1,4 @@
-package net.voidgroup.celestia_lib.unsafe;
+package net.voidgroup.celestia.unsafe;
 
 import org.jetbrains.annotations.NotNull;
 

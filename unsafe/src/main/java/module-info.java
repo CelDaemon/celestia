@@ -1,4 +1,5 @@
-module net.voidgroup.celestia_lib.unsafe {
-    exports net.voidgroup.celestia_lib.unsafe;
+module net.voidgroup.celestia.unsafe {
+    exports net.voidgroup.celestia.unsafe;
+    exports net.voidgroup.celestia.unsafe.glfw;
     requires static org.jetbrains.annotations;
 }

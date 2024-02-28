@@ -3,4 +3,4 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-include(':celestia-lib', ':unsafe', ':example')
+include(':celestia', ':unsafe', ':example')

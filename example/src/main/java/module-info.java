@@ -1,3 +1,4 @@
-module net.voidgroup.celestia_lib.example {
-    requires net.voidgroup.celestia_lib.unsafe;
+module net.voidgroup.celestia.example {
+    requires net.voidgroup.celestia;
+    requires static org.jetbrains.annotations;
 }
