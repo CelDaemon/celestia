@@ -7,10 +7,11 @@
         <option name="distributionType" value="LOCAL" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleHome" value="/opt/gradle-8.6" />
+        <option name="gradleJvm" value="#JAVA_HOME" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/celestia-lib" />
+            <option value="$PROJECT_DIR$/celestia" />
             <option value="$PROJECT_DIR$/example" />
             <option value="$PROJECT_DIR$/unsafe" />
           </set>
