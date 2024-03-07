@@ -17,7 +17,17 @@ public abstract class MethodProvider {
     public <R, A> UnoMethod<R, A> getMethod(String name, MemoryLayout returnType, MemoryLayout argumentType) {
         return new UnoMethod<>(getMethodHandle(name, FunctionDescriptor.of(returnType, argumentType)), name);
     }
+    public <R, A, B, C, D, E> PentaMethod<R, A, B, C, D, E> getMethod(String name, MemoryLayout returnType, MemoryLayout arg1Type,
+                                                                      MemoryLayout arg2Type,
+                                                                      MemoryLayout arg3Type,
+                                                                      MemoryLayout arg4Type,
+                                                                      MemoryLayout arg5Type) {
+        return new PentaMethod<>(getMethodHandle(name, FunctionDescriptor.of(returnType, arg1Type, arg2Type, arg3Type, arg4Type, arg5Type)), name);
+    }
     public VoidMethod getVoidMethod(String name) {
         return new VoidMethod(getMethodHandle(name, FunctionDescriptor.ofVoid()), name);
+    }
+    public <A> UnoVoidMethod<A> getVoidMethod(String name, MemoryLayout argType) {
+        return new UnoVoidMethod<>(getMethodHandle(name, FunctionDescriptor.ofVoid(argType)), name);
     }
 }
