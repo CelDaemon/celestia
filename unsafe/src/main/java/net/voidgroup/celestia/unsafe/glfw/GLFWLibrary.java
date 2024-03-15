@@ -9,7 +9,6 @@ import java.lang.foreign.ValueLayout;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public class GLFWLibrary {
     static {
@@ -31,19 +30,18 @@ public class GLFWLibrary {
     }
     private static BiConsumer<Integer, String> errorHandler;
     private static void handleError(int errorCode, MemorySegment memorySegment) {
-        errorHandler.accept(errorCode, memorySegment.reinterpret(StandardLibrary.strlen.execute(memorySegment) + 1).getUtf8String(0));
+        errorHandler.accept(errorCode, UnsafeUtil.readString(memorySegment));
     }
-    public static BiConsumer<Integer, String> setErrorHandler(BiConsumer<Integer, String> handler) {
-        var oldErrorHandler = errorHandler;
+    public static void setErrorHandler(BiConsumer<Integer, String> handler) {
         errorHandler = handler;
         glfwSetErrorCallback.execute(errorHandlerAddress);
-        return oldErrorHandler;
     }
     public static final SharedLibraryProvider PROVIDER;
     private static final MemorySegment errorHandlerAddress;
     public static final Method<Boolean> glfwInit = PROVIDER.getMethod("glfwInit", ValueLayout.JAVA_BOOLEAN);
     public static final VoidMethod glfwTerminate = PROVIDER.getVoidMethod("glfwTerminate");
     public static final PentaMethod<Long, Integer, Integer, MemorySegment, MemorySegment, MemorySegment> glfwCreateWindow = PROVIDER.getMethod("glfwCreateWindow", ValueLayout.JAVA_LONG, ValueLayout.JAVA_INT, ValueLayout.JAVA_INT, ValueLayout.ADDRESS, ValueLayout.ADDRESS, ValueLayout.ADDRESS);
+    public static final Method<MemorySegment> glfwGetVersionString = PROVIDER.getMethod("glfwGetVersionString", ValueLayout.ADDRESS);
     public static final UnoVoidMethod<Long> glfwDestroyWindow = PROVIDER.getVoidMethod("glfwDestroyWindow", ValueLayout.JAVA_LONG);
     private static final UnoVoidMethod<MemorySegment> glfwSetErrorCallback = PROVIDER.getVoidMethod("glfwSetErrorCallback", ValueLayout.ADDRESS);
 }
