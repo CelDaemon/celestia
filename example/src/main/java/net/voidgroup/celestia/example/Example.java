@@ -7,10 +7,8 @@ public class Example {
     public static void main(String[] args) {
         try(var glfw = new GLFW()) {
             System.out.println(glfw.getVersionString());
-            try(var _ = glfw.createWindow(new Point(800, 800), "Test")) {
-
-            }
-
+            var window = glfw.createWindow(new Point(800, 800), "Test");
+            window.close();
         }
     }
 }
