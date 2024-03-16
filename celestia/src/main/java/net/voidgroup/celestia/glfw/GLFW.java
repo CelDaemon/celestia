@@ -2,7 +2,7 @@ package net.voidgroup.celestia.glfw;
 
 import net.voidgroup.celestia.unsafe.UnsafeUtil;
 import net.voidgroup.celestia.unsafe.glfw.GLFWLibrary;
-import net.voidgroup.celestia.util.Vec2;
+import net.voidgroup.celestia.util.Point;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,7 +24,7 @@ public class GLFW implements AutoCloseable {
         return UnsafeUtil.readString(GLFWLibrary.glfwGetVersionString.execute());
     }
     @NotNull
-    public Window createWindow(@NotNull Vec2 size, @NotNull String title) {
+    public Window createWindow(@NotNull Point size, @NotNull String title) {
         if(closed) throw new IllegalStateException();
         return new Window(size, title);
     }

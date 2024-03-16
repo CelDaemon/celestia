@@ -1,7 +1,7 @@
 package net.voidgroup.celestia.glfw;
 
 import net.voidgroup.celestia.unsafe.glfw.GLFWLibrary;
-import net.voidgroup.celestia.util.Vec2;
+import net.voidgroup.celestia.util.Point;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
@@ -10,7 +10,7 @@ import java.util.Objects;
 
 public class Window implements AutoCloseable {
     private final long handle;
-    protected Window(Vec2 size, String title) {
+    protected Window(Point size, String title) {
         try(var arena = Arena.ofConfined()) {
             var titleBytes = Objects.requireNonNull(title).getBytes(StandardCharsets.UTF_8);
             var titleMemory = arena.allocate(titleBytes.length + 1);
