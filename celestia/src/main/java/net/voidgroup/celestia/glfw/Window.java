@@ -6,16 +6,17 @@ import net.voidgroup.celestia.util.Vec2;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 public class Window implements AutoCloseable {
     private final long handle;
-    protected Window(GLFW glfw, Vec2<Integer> size, String title) {
+    protected Window(Vec2 size, String title) {
         try(var arena = Arena.ofConfined()) {
-            var titleBytes = title.getBytes(StandardCharsets.UTF_8);
+            var titleBytes = Objects.requireNonNull(title).getBytes(StandardCharsets.UTF_8);
             var titleMemory = arena.allocate(titleBytes.length + 1);
             titleMemory.copyFrom(MemorySegment.ofArray(titleBytes));
             if((handle = GLFWLibrary.glfwCreateWindow.execute(size.x(), size.y(), titleMemory, MemorySegment.NULL, MemorySegment.NULL)) == 0) {
-                throw new RuntimeException(STR."Failed to create window (\{glfw.getError().message()})");
+                throw new GLFWException("Failed to create window");
             }
         }
     }

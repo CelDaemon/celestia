@@ -3,23 +3,30 @@ package net.voidgroup.celestia.glfw;
 import net.voidgroup.celestia.unsafe.UnsafeUtil;
 import net.voidgroup.celestia.unsafe.glfw.GLFWLibrary;
 import net.voidgroup.celestia.util.Vec2;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+@NotNull
 public class GLFW implements AutoCloseable {
-    private boolean closed;
-    private Error error;
-    public GLFW() {
-        GLFWLibrary.setErrorHandler((integer, s) -> error = new Error(integer, s));
-        if(!GLFWLibrary.glfwInit.execute()) throw new RuntimeException();
-    }
-    public Error getError() {
+    @Nullable
+    private static Error error;
+    public static @Nullable Error getError() {
         return error;
     }
+    private boolean closed;
+    public GLFW() {
+        GLFWLibrary.setErrorHandler((integer, s) -> error = new Error(ErrorCode.valueOf(integer), s));
+        if(!GLFWLibrary.glfwInit.execute()) throw new RuntimeException();
+    }
+    @NotNull
     public String getVersionString() {
+        if(closed) throw new IllegalStateException();
         return UnsafeUtil.readString(GLFWLibrary.glfwGetVersionString.execute());
     }
-    public Window createWindow(Vec2<Integer> size, String title) {
+    @NotNull
+    public Window createWindow(@NotNull Vec2 size, @NotNull String title) {
         if(closed) throw new IllegalStateException();
-        return new Window(this, size, title);
+        return new Window(size, title);
     }
     @Override
     public void close() {

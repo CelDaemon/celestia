@@ -1,4 +1,4 @@
 package net.voidgroup.celestia.glfw;
 
-public record Error(int code, String message) {
+public record Error(ErrorCode code, String message) {
 }
