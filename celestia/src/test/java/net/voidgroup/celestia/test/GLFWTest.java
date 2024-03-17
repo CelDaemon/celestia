@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
+
 public class GLFWTest {
     private static GLFW glfw;
     @BeforeAll
@@ -25,7 +27,7 @@ public class GLFWTest {
     }
     @Test
     void createWindow() {
-        glfw.createWindow(new Point(100, 100), "Example");
+        glfw.createWindow(new Point(100, 100), "Example", Map.of(0x00020004, 0));
     }
     @Test
     void crashEmpty() {

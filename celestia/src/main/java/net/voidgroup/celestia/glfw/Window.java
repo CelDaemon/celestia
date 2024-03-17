@@ -6,12 +6,14 @@ import net.voidgroup.celestia.util.Point;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import java.util.Objects;
 
 public class Window implements AutoCloseable {
     private final long handle;
     private final WindowContext context;
-    protected Window(Point size, String title) {
+    protected Window(Point size, String title, Map<Integer, Integer> hints) {
+        hints.forEach(GLFWLibrary.glfwWindowHint::execute);
         try(var arena = Arena.ofConfined()) {
             var titleBytes = Objects.requireNonNull(title).getBytes(StandardCharsets.UTF_8);
             var titleMemory = arena.allocate(titleBytes.length + 1);

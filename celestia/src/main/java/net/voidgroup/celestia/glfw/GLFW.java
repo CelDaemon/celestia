@@ -1,10 +1,13 @@
 package net.voidgroup.celestia.glfw;
 
-import net.voidgroup.celestia.unsafe.UnsafeUtil;
 import net.voidgroup.celestia.unsafe.GLFWLibrary;
+import net.voidgroup.celestia.unsafe.UnsafeUtil;
 import net.voidgroup.celestia.util.Point;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Collections;
+import java.util.Map;
 
 @NotNull
 public class GLFW implements AutoCloseable {
@@ -25,8 +28,12 @@ public class GLFW implements AutoCloseable {
     }
     @NotNull
     public Window createWindow(@NotNull Point size, @NotNull String title) {
+        return createWindow(size, title, null);
+    }
+    @NotNull
+    public Window createWindow(@NotNull Point size, @NotNull String title, Map<Integer, Integer> hints) {
         if(closed) throw new IllegalStateException();
-        return new Window(size, title);
+        return new Window(size, title, hints != null ? hints : Collections.emptyMap());
     }
     public void pollEvents() {
         GLFWLibrary.glfwPollEvents.execute();
