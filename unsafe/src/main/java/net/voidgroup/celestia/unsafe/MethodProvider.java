@@ -30,4 +30,7 @@ public abstract class MethodProvider {
     public <A> UnoVoidMethod<A> getVoidMethod(String name, MemoryLayout argType) {
         return new UnoVoidMethod<>(getMethodHandle(name, FunctionDescriptor.ofVoid(argType)), name);
     }
+    public <A, B, C, D> QuadVoidMethod<A, B, C, D> getVoidMethod(String name, MemoryLayout arg1Type, MemoryLayout arg2Type, MemoryLayout arg3Type, MemoryLayout arg4Type) {
+        return new QuadVoidMethod<>(getMethodHandle(name, FunctionDescriptor.ofVoid(arg1Type, arg2Type, arg3Type, arg4Type)), name);
+    }
 }

@@ -1,6 +1,4 @@
-package net.voidgroup.celestia.unsafe.glfw;
-
-import net.voidgroup.celestia.unsafe.*;
+package net.voidgroup.celestia.unsafe;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.FunctionDescriptor;
@@ -43,5 +41,10 @@ public class GLFWLibrary {
     public static final PentaMethod<Long, Integer, Integer, MemorySegment, MemorySegment, MemorySegment> glfwCreateWindow = PROVIDER.getMethod("glfwCreateWindow", ValueLayout.JAVA_LONG, ValueLayout.JAVA_INT, ValueLayout.JAVA_INT, ValueLayout.ADDRESS, ValueLayout.ADDRESS, ValueLayout.ADDRESS);
     public static final Method<MemorySegment> glfwGetVersionString = PROVIDER.getMethod("glfwGetVersionString", ValueLayout.ADDRESS);
     public static final UnoVoidMethod<Long> glfwDestroyWindow = PROVIDER.getVoidMethod("glfwDestroyWindow", ValueLayout.JAVA_LONG);
+    public static final UnoVoidMethod<Long> glfwMakeContextCurrent = PROVIDER.getVoidMethod("glfwMakeContextCurrent", ValueLayout.JAVA_LONG);
+    public static final UnoMethod<MemorySegment, MemorySegment> glfwGetProcAddress = PROVIDER.getMethod("glfwGetProcAddress", ValueLayout.ADDRESS, ValueLayout.ADDRESS);
+    public static final UnoVoidMethod<Long> glfwSwapBuffers = PROVIDER.getVoidMethod("glfwSwapBuffers", ValueLayout.JAVA_LONG);
+    public static final VoidMethod glfwPollEvents = PROVIDER.getVoidMethod("glfwPollEvents");
+    public static final UnoMethod<Boolean, Long> glfwWindowShouldClose = PROVIDER.getMethod("glfwWindowShouldClose", ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG);
     private static final UnoVoidMethod<MemorySegment> glfwSetErrorCallback = PROVIDER.getVoidMethod("glfwSetErrorCallback", ValueLayout.ADDRESS);
 }
