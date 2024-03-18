@@ -28,6 +28,6 @@ public class WindowContext implements AutoCloseable {
         glLibrary.glClear.execute(GLLibrary.GL_COLOR_BUFFER_BIT);
     }
     public void clearColor(byte r, byte g, byte b, byte a) {
-        clearColor(1f / 256f * (float) r, 1f / 256f * (float) g, 1f / 256f * (float) b, 1f / 256f * (float) a);
+        clearColor(1f / 256f * (float) (r & 0xFF), 1f / 256f * (float) (g & 0xFF), 1f / 256f * (float) (b & 0xFF), 1f / 256f * (float) (a & 0xFF));
     }
 }
