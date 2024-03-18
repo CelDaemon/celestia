@@ -44,6 +44,7 @@ public class GLFWLibrary {
     public static final UnoVoidMethod<Long> glfwMakeContextCurrent = PROVIDER.getVoidMethod("glfwMakeContextCurrent", ValueLayout.JAVA_LONG);
     public static final UnoMethod<MemorySegment, MemorySegment> glfwGetProcAddress = PROVIDER.getMethod("glfwGetProcAddress", ValueLayout.ADDRESS, ValueLayout.ADDRESS);
     public static final UnoVoidMethod<Long> glfwSwapBuffers = PROVIDER.getVoidMethod("glfwSwapBuffers", ValueLayout.JAVA_LONG);
+    public static final UnoVoidMethod<Integer> glfwSwapInterval = PROVIDER.getVoidMethod("glfwSwapInterval", ValueLayout.JAVA_INT);
     public static final VoidMethod glfwPollEvents = PROVIDER.getVoidMethod("glfwPollEvents");
     public static final UnoMethod<Boolean, Long> glfwWindowShouldClose = PROVIDER.getMethod("glfwWindowShouldClose", ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG);
     public static final DuoVoidMethod<Integer, Integer> glfwWindowHint = PROVIDER.getVoidMethod("glfwWindowHint", ValueLayout.JAVA_INT, ValueLayout.JAVA_INT);

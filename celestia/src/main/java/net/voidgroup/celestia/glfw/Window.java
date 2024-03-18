@@ -24,9 +24,6 @@ public class Window implements AutoCloseable {
         }
         context = new WindowContext(handle);
     }
-    public void swap() {
-        GLFWLibrary.glfwSwapBuffers.execute(handle);
-    }
     public boolean shouldClose() {
         return GLFWLibrary.glfwWindowShouldClose.execute(handle);
     }
