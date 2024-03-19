@@ -28,6 +28,7 @@ public class GLFWLibrary {
             throw new RuntimeException(e);
         }
     }
+    public static final int GLFW_VISIBLE = 0x00020004;
     public static final @NotNull SharedLibraryProvider PROVIDER;
     public static final Method<Boolean> glfwInit = PROVIDER.getMethod("glfwInit", ValueLayout.JAVA_BOOLEAN);
     public static final VoidMethod glfwTerminate = PROVIDER.getVoidMethod("glfwTerminate");
