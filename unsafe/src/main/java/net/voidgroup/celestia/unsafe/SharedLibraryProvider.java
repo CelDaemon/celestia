@@ -1,5 +1,7 @@
 package net.voidgroup.celestia.unsafe;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
@@ -22,7 +24,8 @@ public class SharedLibraryProvider extends MethodProvider {
         lookup = SymbolLookup.libraryLookup(natives.toAbsolutePath(), Arena.global());
     }
     @Override
-    protected MemorySegment resolveMethodAddress(String name) {
+    @NotNull
+    protected MemorySegment resolveMethodAddress(@NotNull String name) {
         return lookup.find(name).orElseThrow();
     }
 }

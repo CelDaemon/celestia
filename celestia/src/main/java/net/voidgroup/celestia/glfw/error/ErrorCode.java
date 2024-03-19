@@ -1,5 +1,8 @@
-package net.voidgroup.celestia.glfw;
+package net.voidgroup.celestia.glfw.error;
 
+import org.jetbrains.annotations.NotNull;
+
+@NotNull
 public enum ErrorCode {
     NoError(0x0),
     NoCurrentContext(0x00010002),
@@ -19,7 +22,7 @@ public enum ErrorCode {
     ErrorCode(int code) {
         this.code = code;
     }
-
+    @NotNull
     public static ErrorCode valueOf(int val) {
         return switch (val) {
             case 0x0 -> NoError;

@@ -1,6 +1,7 @@
 package net.voidgroup.celestia.test;
 
 import net.voidgroup.celestia.util.Vector2;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,7 +20,7 @@ public class Vector2Test {
     @Test
     void correctDistance() {
         class Reference {
-            static double distance(Vector2 p1, Vector2 p2) {
+            static double distance(@NotNull Vector2 p1, @NotNull Vector2 p2) {
                 var x = Math.max(p1.x(), p2.x()) - Math.min(p1.x(), p2.x());
                 var y = Math.max(p1.y(), p2.y()) - Math.min(p1.y(), p2.y());
                 return Math.sqrt(x * x + y * y);

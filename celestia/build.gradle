@@ -6,6 +6,7 @@ plugins {
 dependencies {
     implementation project(':unsafe')
     compileOnly "org.jetbrains:annotations:+"
+    testCompileOnly "org.jetbrains:annotations:+"
     testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
 }
 compileJava {

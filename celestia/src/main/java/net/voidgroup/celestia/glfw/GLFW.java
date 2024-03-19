@@ -1,46 +1,58 @@
 package net.voidgroup.celestia.glfw;
 
+import net.voidgroup.celestia.glfw.error.Error;
+import net.voidgroup.celestia.glfw.error.ErrorCode;
 import net.voidgroup.celestia.unsafe.GLFWLibrary;
-import net.voidgroup.celestia.unsafe.UnsafeUtil;
-import net.voidgroup.celestia.util.Point;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @NotNull
 public class GLFW implements AutoCloseable {
+    private static final Logger LOGGER = Logger.getAnonymousLogger();
+    private static final Set<NativeClosable> closableSet = HashSet.newHashSet(4);
     @Nullable
     private static Error error;
-    public static @Nullable Error getError() {
+    @Nullable
+    private static GLFW instance;
+    public static boolean isInitialised() {
+        return instance != null && !instance.closed;
+    }
+    @NotNull
+    public static GLFW getInstance() {
+        if(instance == null || instance.closed) throw new IllegalStateException("GLFW is not initialised");
+        return instance;
+    }
+    @Nullable
+    public static Error getError() {
         return error;
     }
     private boolean closed;
     public GLFW() {
+        if(isInitialised()) throw new IllegalStateException("GLFW already initialised");
+        instance = this;
         GLFWLibrary.setErrorHandler((integer, s) -> error = new Error(ErrorCode.valueOf(integer), s));
         if(!GLFWLibrary.glfwInit.execute()) throw new RuntimeException();
     }
-    @NotNull
-    public String getVersionString() {
-        if(closed) throw new IllegalStateException();
-        return UnsafeUtil.readString(GLFWLibrary.glfwGetVersionString.execute());
+    protected void register(NativeClosable closable) {
+        GLFW.closableSet.add(closable);
     }
-    @NotNull
-    public Window createWindow(@NotNull Point size, @NotNull String title) {
-        return createWindow(size, title, null);
-    }
-    @NotNull
-    public Window createWindow(@NotNull Point size, @NotNull String title, Map<Integer, Integer> hints) {
-        if(closed) throw new IllegalStateException();
-        return new Window(size, title, hints != null ? hints : Collections.emptyMap());
-    }
-    public void pollEvents() {
-        GLFWLibrary.glfwPollEvents.execute();
-    }
+
     @Override
     public void close() {
-        closed = true;
+        if(closed) return;
         GLFWLibrary.glfwTerminate.execute();
+        closed = true;
+        for(var closable : closableSet) {
+            try {
+                closable.close(false);
+            } catch (Exception ex) {
+                LOGGER.log(Level.SEVERE, "Failed to close", ex);
+            }
+        }
     }
 }

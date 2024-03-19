@@ -1,40 +1,33 @@
 package net.voidgroup.celestia.glfw;
 
+import net.voidgroup.celestia.glfw.error.GLFWException;
 import net.voidgroup.celestia.unsafe.GLFWLibrary;
 import net.voidgroup.celestia.util.Point;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.nio.charset.StandardCharsets;
-import java.util.Map;
-import java.util.Objects;
-
-public class Window implements AutoCloseable {
+@NotNull
+public class Window implements NativeClosable {
+    private final GLContext context;
     private final long handle;
-    private final WindowContext context;
-    protected Window(Point size, String title, Map<Integer, Integer> hints) {
-        hints.forEach(GLFWLibrary.glfwWindowHint::execute);
+    private boolean closed;
+
+    public Window(@NotNull Point size, @NotNull String title) {
+        if(size.x() < 1 || size.y() < 1) throw new IllegalArgumentException("Point is less than 1");
+        GLFW.getInstance().register(this);
         try(var arena = Arena.ofConfined()) {
-            var titleBytes = Objects.requireNonNull(title).getBytes(StandardCharsets.UTF_8);
-            var titleMemory = arena.allocate(titleBytes.length + 1);
-            titleMemory.copyFrom(MemorySegment.ofArray(titleBytes));
-            if((handle = GLFWLibrary.glfwCreateWindow.execute(size.x(), size.y(), titleMemory, MemorySegment.NULL, MemorySegment.NULL)) == 0) {
-                throw new GLFWException("Failed to create window");
-            }
+            var titleSegment = arena.allocateUtf8String(title);
+            handle = GLFWLibrary.glfwCreateWindow.execute(size.x(), size.y(), titleSegment, 0L, MemorySegment.NULL);
+            if(handle == 0) throw new GLFWException("Failed to create window");
         }
-        context = new WindowContext(handle);
+        context = new GLContext();
     }
-    public boolean shouldClose() {
-        return GLFWLibrary.glfwWindowShouldClose.execute(handle);
-    }
-
-    public WindowContext getContext() {
-        return context;
-    }
-
     @Override
-    public void close() {
-        GLFWLibrary.glfwDestroyWindow.execute(handle);
+    public void close(boolean nativeClose) {
+        if(closed) return;
+        if(nativeClose) GLFWLibrary.glfwDestroyWindow.execute(handle);
         context.close();
+        closed = true;
     }
 }
