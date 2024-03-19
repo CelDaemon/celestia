@@ -19,18 +19,6 @@ public class GLFW implements AutoCloseable {
     private static Error error;
     @Nullable
     private static GLFW instance;
-    public static boolean isInitialised() {
-        return instance != null && !instance.closed;
-    }
-    @NotNull
-    public static GLFW getInstance() {
-        if(instance == null || instance.closed) throw new IllegalStateException("GLFW is not initialised");
-        return instance;
-    }
-    @Nullable
-    public static Error getError() {
-        return error;
-    }
     private boolean closed;
     public GLFW() {
         if(isInitialised()) throw new IllegalStateException("GLFW already initialised");
@@ -38,6 +26,22 @@ public class GLFW implements AutoCloseable {
         GLFWLibrary.setErrorHandler((integer, s) -> error = new Error(ErrorCode.valueOf(integer), s));
         if(!GLFWLibrary.glfwInit.execute()) throw new RuntimeException();
     }
+
+    public static boolean isInitialised() {
+        return instance != null && !instance.closed;
+    }
+
+    @NotNull
+    public static GLFW getInstance() {
+        if(instance == null || instance.closed) throw new IllegalStateException("GLFW is not initialised");
+        return instance;
+    }
+
+    @Nullable
+    public static Error getError() {
+        return error;
+    }
+
     protected void register(NativeClosable closable) {
         GLFW.closableSet.add(closable);
     }

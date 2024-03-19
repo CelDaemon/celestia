@@ -28,16 +28,7 @@ public class GLFWLibrary {
             throw new RuntimeException(e);
         }
     }
-    private static BiConsumer<Integer, String> errorHandler;
-    private static void handleError(int errorCode, @NotNull MemorySegment memorySegment) {
-        errorHandler.accept(errorCode, UnsafeUtil.readString(memorySegment));
-    }
-    public static void setErrorHandler(BiConsumer<Integer, String> handler) {
-        errorHandler = handler;
-        glfwSetErrorCallback.execute(errorHandlerAddress);
-    }
     public static final @NotNull SharedLibraryProvider PROVIDER;
-    private static final MemorySegment errorHandlerAddress;
     public static final Method<Boolean> glfwInit = PROVIDER.getMethod("glfwInit", ValueLayout.JAVA_BOOLEAN);
     public static final VoidMethod glfwTerminate = PROVIDER.getVoidMethod("glfwTerminate");
     public static final PentaMethod<Long, Integer, Integer, MemorySegment, Long, MemorySegment> glfwCreateWindow = PROVIDER.getMethod("glfwCreateWindow", ValueLayout.JAVA_LONG, ValueLayout.JAVA_INT, ValueLayout.JAVA_INT, ValueLayout.ADDRESS, ValueLayout.JAVA_LONG, ValueLayout.ADDRESS);
@@ -51,5 +42,16 @@ public class GLFWLibrary {
     public static final UnoMethod<Boolean, Long> glfwWindowShouldClose = PROVIDER.getMethod("glfwWindowShouldClose", ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG);
     public static final DuoVoidMethod<Integer, Integer> glfwWindowHint = PROVIDER.getVoidMethod("glfwWindowHint", ValueLayout.JAVA_INT, ValueLayout.JAVA_INT);
     public static final Method<Long> glfwGetPrimaryMonitor = PROVIDER.getMethod("glfwGetPrimaryMonitor", ValueLayout.JAVA_LONG);
+    private static final MemorySegment errorHandlerAddress;
     private static final UnoVoidMethod<MemorySegment> glfwSetErrorCallback = PROVIDER.getVoidMethod("glfwSetErrorCallback", ValueLayout.ADDRESS);
+    private static BiConsumer<Integer, String> errorHandler;
+
+    private static void handleError(int errorCode, @NotNull MemorySegment memorySegment) {
+        errorHandler.accept(errorCode, UnsafeUtil.readString(memorySegment));
+    }
+
+    public static void setErrorHandler(BiConsumer<Integer, String> handler) {
+        errorHandler = handler;
+        glfwSetErrorCallback.execute(errorHandlerAddress);
+    }
 }
