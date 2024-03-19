@@ -3,6 +3,7 @@ package net.voidgroup.celestia.glfw;
 import net.voidgroup.celestia.glfw.error.Error;
 import net.voidgroup.celestia.glfw.error.ErrorCode;
 import net.voidgroup.celestia.unsafe.GLFWLibrary;
+import net.voidgroup.celestia.unsafe.UnsafeUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,7 +34,7 @@ public class GLFW implements AutoCloseable {
 
     @NotNull
     public static GLFW getInstance() {
-        if(instance == null || instance.closed) throw new IllegalStateException("GLFW is not initialised");
+        if(!isInitialised()) throw new IllegalStateException("GLFW is not initialised");
         return instance;
     }
 
@@ -42,8 +43,15 @@ public class GLFW implements AutoCloseable {
         return error;
     }
 
-    protected void register(NativeClosable closable) {
+    protected static void register(NativeClosable closable) {
         closableSet.add(closable);
+    }
+    protected static void unregister(NativeClosable closable) {
+        closableSet.remove(closable);
+    }
+    public String getVersionString() {
+        if(closed) throw new IllegalStateException("GLFW is terminated");
+        return UnsafeUtil.readString(GLFWLibrary.glfwGetVersionString.execute());
     }
 
     public void pollEvents() {
@@ -63,5 +71,6 @@ public class GLFW implements AutoCloseable {
                 LOGGER.log(Level.SEVERE, "Failed to close", ex);
             }
         }
+        closableSet.clear();
     }
 }
