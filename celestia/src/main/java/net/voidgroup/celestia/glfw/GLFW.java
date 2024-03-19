@@ -43,7 +43,12 @@ public class GLFW implements AutoCloseable {
     }
 
     protected void register(NativeClosable closable) {
-        GLFW.closableSet.add(closable);
+        closableSet.add(closable);
+    }
+
+    public void pollEvents() {
+        if(closed) throw new IllegalStateException("GLFW is terminated");
+        GLFWLibrary.glfwPollEvents.execute();
     }
 
     @Override

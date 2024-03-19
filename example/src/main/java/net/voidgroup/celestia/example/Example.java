@@ -6,9 +6,12 @@ import net.voidgroup.celestia.util.Point;
 
 public class Example {
     public static void main(String[] args) {
-        try(var _ = new GLFW()) {
-            try(var _ = new Window(new Point(10, 10),"boo")) {
-
+        try(var glfw = new GLFW()) {
+            try(var window = new Window(new Point(500, 500),"boo")) {
+                while (!window.shouldClose()) {
+                    Thread.onSpinWait();
+                    glfw.pollEvents();
+                }
             }
         }
     }

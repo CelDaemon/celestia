@@ -23,6 +23,10 @@ public class Window implements NativeClosable {
         }
         context = new GLContext();
     }
+    public boolean shouldClose() {
+        if(closed) throw new IllegalStateException("Window is destroyed");
+        return GLFWLibrary.glfwWindowShouldClose.execute(handle);
+    }
     @Override
     public void close(boolean nativeClose) {
         if(closed) return;
