@@ -3,6 +3,7 @@ package net.voidgroup.celestia.glfw;
 import net.voidgroup.celestia.glfw.error.GLFWException;
 import net.voidgroup.celestia.unsafe.GLFWLibrary;
 import net.voidgroup.celestia.util.Point;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -73,8 +74,15 @@ public class Window implements NativeClosable {
 
     public record WindowHint<T>(Window.WindowHint.WindowHintKey<T> key, T value) {
         public static final WindowHintKey<Boolean> VISIBLE = new WindowHintKey<>(GLFWLibrary.GLFW_VISIBLE);
+        public static final WindowHintKey<Boolean> RESIZABLE = new WindowHintKey<>(GLFWLibrary.GLFW_RESIZABLE);
+        public static final WindowHintKey<Boolean> DECORATED = new WindowHintKey<>(GLFWLibrary.GLFW_DECORATED);
+        public static final WindowHintKey<Boolean> FLOATING = new WindowHintKey<>(GLFWLibrary.GLFW_FLOATING);
+        public static final WindowHintKey<Boolean> MAXIMIZED = new WindowHintKey<>(GLFWLibrary.GLFW_MAXIMIZED);
+        public static final WindowHintKey<Boolean> CENTER_CURSOR = new WindowHintKey<>(GLFWLibrary.GLFW_CENTER_CURSOR);
+        public static final WindowHintKey<Boolean> TRANSPARENT_FRAMEBUFFER = new WindowHintKey<>(GLFWLibrary.GLFW_TRANSPARENT_FRAMEBUFFER);
         public record WindowHintKey<T>(int id) {
-            public WindowHint<T> of(T value) {
+            @Contract("_ -> new")
+            public @NotNull WindowHint<T> of(T value) {
                 return new WindowHint<>(this, value);
             }
         }
