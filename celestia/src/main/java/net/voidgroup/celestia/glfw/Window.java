@@ -73,13 +73,7 @@ public class Window implements NativeClosable {
 
     public record WindowHint<T>(Window.WindowHint.WindowHintKey<T> key, T value) {
         public static final WindowHintKey<Boolean> VISIBLE = new WindowHintKey<>(GLFWLibrary.GLFW_VISIBLE);
-        public static class WindowHintKey<T> {
-            public final int id;
-
-            private WindowHintKey(int id) {
-                this.id = id;
-            }
-
+        public record WindowHintKey<T>(int id) {
             public WindowHint<T> of(T value) {
                 return new WindowHint<>(this, value);
             }
