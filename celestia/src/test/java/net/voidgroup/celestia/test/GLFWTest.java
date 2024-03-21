@@ -2,6 +2,7 @@ package net.voidgroup.celestia.test;
 
 import net.voidgroup.celestia.glfw.GLFW;
 import net.voidgroup.celestia.glfw.Window;
+import net.voidgroup.celestia.glfw.WindowHint;
 import net.voidgroup.celestia.glfw.error.ErrorCode;
 import net.voidgroup.celestia.glfw.error.GLFWException;
 import net.voidgroup.celestia.util.Point;
@@ -28,7 +29,7 @@ public class GLFWTest {
     }
     @Test
     void createWindow() {
-        var window = new Window(new Point(100, 100), "Example", List.of(Window.WindowHint.VISIBLE.of(false)));
+        var window = new Window(new Point(100, 100), "Example", List.of(WindowHint.VISIBLE.of(false)));
         window.close();
     }
     @Test

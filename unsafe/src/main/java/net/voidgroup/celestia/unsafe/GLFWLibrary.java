@@ -35,6 +35,7 @@ public class GLFWLibrary {
     public static final int GLFW_MAXIMIZED = 0x00020008;
     public static final int GLFW_CENTER_CURSOR = 0x00020009;
     public static final int GLFW_TRANSPARENT_FRAMEBUFFER = 0x0002000A;
+    public static final int GLFW_FOCUS_ON_SHOW = 0x0002000C;
     public static final @NotNull SharedLibraryProvider PROVIDER;
     public static final Method<Boolean> glfwInit = PROVIDER.getMethod("glfwInit", ValueLayout.JAVA_BOOLEAN);
     public static final VoidMethod glfwTerminate = PROVIDER.getVoidMethod("glfwTerminate");
