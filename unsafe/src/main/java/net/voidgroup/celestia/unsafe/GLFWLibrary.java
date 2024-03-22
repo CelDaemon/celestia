@@ -50,6 +50,7 @@ public class GLFWLibrary {
     public static final UnoMethod<Boolean, Long> glfwWindowShouldClose = PROVIDER.getMethod("glfwWindowShouldClose", ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG);
     public static final DuoVoidMethod<Integer, Integer> glfwWindowHint = PROVIDER.getVoidMethod("glfwWindowHint", ValueLayout.JAVA_INT, ValueLayout.JAVA_INT);
     public static final DuoVoidMethod<Integer, MemorySegment> glfwWindowHintString = PROVIDER.getVoidMethod("glfwWindowHintString", ValueLayout.JAVA_INT, ValueLayout.ADDRESS);
+    public static final VoidMethod glfwDefaultWindowHints = PROVIDER.getVoidMethod("glfwDefaultWindowHints");
     public static final Method<Long> glfwGetPrimaryMonitor = PROVIDER.getMethod("glfwGetPrimaryMonitor", ValueLayout.JAVA_LONG);
     private static final MemorySegment errorHandlerAddress;
     private static final UnoVoidMethod<MemorySegment> glfwSetErrorCallback = PROVIDER.getVoidMethod("glfwSetErrorCallback", ValueLayout.ADDRESS);
