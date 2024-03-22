@@ -1,32 +1,32 @@
-package net.voidgroup.celestia.glfw;
+package net.voidgroup.celestia.glfw.window;
 
+import net.voidgroup.celestia.glfw.InternalClosable;
 import net.voidgroup.celestia.glfw.error.GLFWException;
 import net.voidgroup.celestia.unsafe.GLFWLibrary;
 
-public class Monitor implements NativeClosable {
+public class Monitor implements InternalClosable {
     private final long handle;
-    private boolean closed;
-    private Monitor(long handle) {
-        if(!GLFW.isInitialised()) throw new IllegalStateException("GLFW not initialised");
-        GLFW.register(this);
+    private static Monitor PRIMARY_MONITOR;
+
+    public Monitor(long handle) {
         this.handle = handle;
     }
-
+    private boolean closed;
     public static Monitor getPrimary() {
+        if(PRIMARY_MONITOR != null && !PRIMARY_MONITOR.closed) return PRIMARY_MONITOR;
         var handle = GLFWLibrary.glfwGetPrimaryMonitor.execute();
         if(handle == 0) throw new GLFWException("Failed to get primary monitor");
-        return new Monitor(handle);
+        var monitor = new Monitor(handle);
+        PRIMARY_MONITOR = monitor;
+        return monitor;
     }
-
 
     @Override
     public void close(boolean nativeClose) {
         closed = true;
-        GLFW.unregister(this);
     }
 
     public long getHandle() {
-        if(closed) throw new IllegalStateException("Monitor is destroyed");
         return handle;
     }
 }

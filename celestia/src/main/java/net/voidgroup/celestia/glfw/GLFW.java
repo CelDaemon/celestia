@@ -4,73 +4,37 @@ import net.voidgroup.celestia.glfw.error.Error;
 import net.voidgroup.celestia.glfw.error.ErrorCode;
 import net.voidgroup.celestia.unsafe.GLFWLibrary;
 import net.voidgroup.celestia.unsafe.UnsafeUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-@NotNull
 public class GLFW implements AutoCloseable {
-    private static final Logger LOGGER = Logger.getAnonymousLogger();
-    private static final Set<NativeClosable> closableSet = HashSet.newHashSet(4);
-    @Nullable
-    private static Error error;
-    @Nullable
-    private static GLFW instance;
-    private boolean closed;
-    public GLFW() {
-        if(isInitialised()) throw new IllegalStateException("GLFW already initialised");
-        instance = this;
-        GLFWLibrary.setErrorHandler((integer, s) -> error = new Error(ErrorCode.valueOf(integer), s));
-        if(!GLFWLibrary.glfwInit.execute()) throw new RuntimeException();
-    }
-
-    public static boolean isInitialised() {
-        return instance != null && !instance.closed;
-    }
-
-    @NotNull
-    public static GLFW getInstance() {
-        if(!isInitialised()) throw new IllegalStateException("GLFW is not initialised");
-        return instance;
-    }
-
-    @Nullable
+    private static final Set<InternalClosable> closables = HashSet.newHashSet(4);
+    public static Error error;
+    public static boolean initialised;
     public static Error getError() {
         return error;
     }
-
-    protected static void register(NativeClosable closable) {
-        closableSet.add(closable);
+    public GLFW() {
+        if(initialised) throw new IllegalStateException("Initialised");
+        initialised = true;
+        GLFWLibrary.setErrorHandler((code, message) -> error = new Error(ErrorCode.valueOf(code), message));
+        GLFWLibrary.glfwInit.execute();
     }
-    protected static void unregister(NativeClosable closable) {
-        closableSet.remove(closable);
+    public static void register(InternalClosable closable) {
+        closables.add(closable);
+    }
+    public static void unregister(InternalClosable closable) {
+        closables.remove(closable);
     }
     public String getVersionString() {
-        if(closed) throw new IllegalStateException("GLFW is terminated");
         return UnsafeUtil.readString(GLFWLibrary.glfwGetVersionString.execute());
-    }
-
-    public void pollEvents() {
-        if(closed) throw new IllegalStateException("GLFW is terminated");
-        GLFWLibrary.glfwPollEvents.execute();
     }
 
     @Override
     public void close() {
-        if(closed) return;
         GLFWLibrary.glfwTerminate.execute();
-        closed = true;
-        for(var closable : closableSet) {
-            try {
-                closable.close(false);
-            } catch (Exception ex) {
-                LOGGER.log(Level.SEVERE, "Failed to close", ex);
-            }
-        }
-        closableSet.clear();
+        closables.forEach(closable -> closable.close(false));
+        closables.clear();
     }
 }

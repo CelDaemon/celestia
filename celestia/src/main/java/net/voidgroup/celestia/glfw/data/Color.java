@@ -1,4 +1,4 @@
-package net.voidgroup.celestia.glfw;
+package net.voidgroup.celestia.glfw.data;
 
 public record Color(float r, float g, float b, float a) {
     public static final Color TRANS_PINK = fromInt(245, 169, 184, 100);
