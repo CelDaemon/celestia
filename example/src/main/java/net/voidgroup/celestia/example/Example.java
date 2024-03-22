@@ -8,7 +8,7 @@ import net.voidgroup.celestia.glfw.window.WindowBuilder;
 public class Example {
     public static void main(String[] args) throws InterruptedException {
         try(var glfw = new GLFW()) {
-            var window = new WindowBuilder("Test").fullscreen(Monitor.getPrimary()).size(new Point2D(500, 500)).build();
+            var window = new WindowBuilder("Test").fullscreen(Monitor.getPrimary()).build();
             while (true) {
                 Thread.sleep(16);
             }
