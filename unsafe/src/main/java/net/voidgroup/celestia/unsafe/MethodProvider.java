@@ -35,6 +35,9 @@ public abstract class MethodProvider {
     public <A, B> @NotNull DuoVoidMethod<A, B> getVoidMethod(String name, MemoryLayout arg1Type, MemoryLayout arg2Type) {
         return new DuoVoidMethod<>(getMethodHandle(name, FunctionDescriptor.ofVoid(arg1Type, arg2Type)), name);
     }
+    public <A, B, C> @NotNull TriVoidMethod<A, B, C> getVoidMethod(String name, MemoryLayout arg1Type, MemoryLayout arg2Type, MemoryLayout arg3Type) {
+        return new TriVoidMethod<>(getMethodHandle(name, FunctionDescriptor.ofVoid(arg1Type, arg2Type, arg3Type)), name);
+    }
     public <A, B, C, D> @NotNull QuadVoidMethod<A, B, C, D> getVoidMethod(String name, MemoryLayout arg1Type, MemoryLayout arg2Type, MemoryLayout arg3Type, MemoryLayout arg4Type) {
         return new QuadVoidMethod<>(getMethodHandle(name, FunctionDescriptor.ofVoid(arg1Type, arg2Type, arg3Type, arg4Type)), name);
     }

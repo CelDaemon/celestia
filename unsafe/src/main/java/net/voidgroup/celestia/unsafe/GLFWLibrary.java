@@ -2,10 +2,10 @@ package net.voidgroup.celestia.unsafe;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.foreign.*;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
-import java.util.function.BiConsumer;
+import java.lang.foreign.GroupLayout;
+import java.lang.foreign.MemoryLayout;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.ValueLayout;
 
 public class GLFWLibrary {
     static {
@@ -19,11 +19,6 @@ public class GLFWLibrary {
             throw new RuntimeException();
         }
         PROVIDER = new SharedLibraryProvider(name);
-        try {
-            errorHandlerAddress = SharedLibraryProvider.linker.upcallStub(MethodHandles.lookup().findStatic(GLFWLibrary.class, "handleError", MethodType.methodType(void.class, int.class, MemorySegment.class)), FunctionDescriptor.ofVoid(ValueLayout.JAVA_INT, ValueLayout.ADDRESS), Arena.global());
-        } catch (NoSuchMethodException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
     }
     public static final int GLFW_VISIBLE = 0x00020004;
     public static final int GLFW_RESIZABLE = 0x00020003;
@@ -59,16 +54,7 @@ public class GLFWLibrary {
     public static final VoidMethod glfwDefaultWindowHints = PROVIDER.getVoidMethod("glfwDefaultWindowHints");
     public static final Method<Long> glfwGetPrimaryMonitor = PROVIDER.getMethod("glfwGetPrimaryMonitor", ValueLayout.JAVA_LONG);
     public static final UnoMethod<Long, Long> glfwGetVideoMode = PROVIDER.getMethod("glfwGetVideoMode", ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG);
-    private static final MemorySegment errorHandlerAddress;
-    private static final UnoVoidMethod<MemorySegment> glfwSetErrorCallback = PROVIDER.getVoidMethod("glfwSetErrorCallback", ValueLayout.ADDRESS);
-    private static BiConsumer<Integer, String> errorHandler;
+    public static final UnoMethod<Integer, MemorySegment> glfwGetError = PROVIDER.getMethod("glfwGetError", ValueLayout.JAVA_INT, ValueLayout.ADDRESS);
+    public static final TriVoidMethod<MemorySegment, MemorySegment, MemorySegment> glfwGetVersion = PROVIDER.getVoidMethod("glfwGetVersion", ValueLayout.ADDRESS, ValueLayout.ADDRESS, ValueLayout.ADDRESS);
 
-    private static void handleError(int errorCode, @NotNull MemorySegment memorySegment) {
-        errorHandler.accept(errorCode, UnsafeUtil.readString(memorySegment));
-    }
-
-    public static void setErrorHandler(BiConsumer<Integer, String> handler) {
-        errorHandler = handler;
-        glfwSetErrorCallback.execute(errorHandlerAddress);
-    }
 }

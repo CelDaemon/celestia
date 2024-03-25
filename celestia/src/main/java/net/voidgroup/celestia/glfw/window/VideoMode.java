@@ -4,7 +4,6 @@ import net.voidgroup.celestia.glfw.data.Point2D;
 import net.voidgroup.celestia.unsafe.UnsafeUtil;
 
 import java.lang.foreign.MemoryLayout;
-import java.lang.foreign.ValueLayout;
 import java.lang.invoke.VarHandle;
 
 import static net.voidgroup.celestia.unsafe.GLFWLibrary.VIDEO_MODE;

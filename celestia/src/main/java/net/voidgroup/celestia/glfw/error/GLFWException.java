@@ -6,10 +6,12 @@ import org.jetbrains.annotations.NotNull;
 @NotNull
 public class GLFWException extends RuntimeException {
     private final @NotNull ErrorCode code;
-    public GLFWException(@NotNull String message) {
-        super(STR."\{message} (\{GLFW.getError() != null ? GLFW.getError().message() : "No error message"})");
-        if(GLFW.getError() != null) code = GLFW.getError().code();
-        else code = ErrorCode.NoError;
+    private GLFWException(@NotNull String message, Error error) {
+        super(STR."\{message} (\{error.message()})");
+        code = error.code();
+    }
+    public static GLFWException fromError(String message) {
+        return new GLFWException(message, GLFW.getError());
     }
     @NotNull
     public ErrorCode getCode() {

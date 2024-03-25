@@ -23,20 +23,23 @@ public class Window implements InternalClosable, AutoCloseable {
         }
         GLFWLibrary.glfwDefaultWindowHints.execute();
         hints.forEach(WindowHint::apply);
-        if(size == null) size = new Point2D(0, 0);
         var arena = Arena.ofConfined();
         var titleMemory = arena.allocateUtf8String(title);
-        this.handle = GLFWLibrary.glfwCreateWindow.execute(size.x(), size.y(), titleMemory, monitor != null ? monitor.getHandle() : 0, shared != null ? shared.handle : 0);
+        this.handle = GLFWLibrary.glfwCreateWindow.execute(size != null ? size.x() : 0, size != null ? size.y() : 0, titleMemory, monitor != null ? monitor.getHandle() : 0, shared != null ? shared.handle : 0);
         arena.close();
-        if(this.handle == 0) throw new GLFWException("Failed to create window");
+        if(this.handle == 0) throw GLFWException.fromError("Failed to create window");
         GLFW.register(this);
+    }
+    public boolean shouldClose() {
+        if(closed) throw new IllegalStateException("Window is destroyed");
+        return GLFWLibrary.glfwWindowShouldClose.execute(handle);
     }
 
     @Override
     public void close(boolean nativeClose) {
         if(nativeClose && !closed && handle != 0) GLFWLibrary.glfwDestroyWindow.execute(handle);
-        GLFW.unregister(this);
         closed = true;
+        GLFW.unregister(this);
     }
 
     @Override

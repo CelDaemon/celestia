@@ -36,6 +36,6 @@ public class GLFWTest {
             var window = new WindowBuilder("Example").build();
             window.close();
         });
-        Assertions.assertEquals(ex.getCode(), ErrorCode.InvalidValue);
+        Assertions.assertEquals(ErrorCode.InvalidValue, ex.getCode());
     }
 }

@@ -15,7 +15,7 @@ public class Monitor implements InternalClosable {
     public static Monitor getPrimary() {
         if(PRIMARY_MONITOR != null && !PRIMARY_MONITOR.closed) return PRIMARY_MONITOR;
         var handle = GLFWLibrary.glfwGetPrimaryMonitor.execute();
-        if(handle == 0) throw new GLFWException("Failed to get primary monitor");
+        if(handle == 0) throw GLFWException.fromError("Failed to get primary monitor");
         var monitor = new Monitor(handle);
         PRIMARY_MONITOR = monitor;
         return monitor;
