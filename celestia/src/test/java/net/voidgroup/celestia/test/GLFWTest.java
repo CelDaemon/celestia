@@ -1,11 +1,10 @@
 package net.voidgroup.celestia.test;
 
 import net.voidgroup.celestia.glfw.GLFW;
-import net.voidgroup.celestia.glfw.window.WindowBuilder;
-import net.voidgroup.celestia.glfw.window.WindowHint;
+import net.voidgroup.celestia.glfw.data.Point2D;
 import net.voidgroup.celestia.glfw.error.ErrorCode;
 import net.voidgroup.celestia.glfw.error.GLFWException;
-import net.voidgroup.celestia.glfw.data.Point2D;
+import net.voidgroup.celestia.glfw.window.WindowBuilder;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -27,7 +26,7 @@ public class GLFWTest {
     }
     @Test
     void createWindow() {
-        var window = new WindowBuilder("Example").size(new Point2D(500, 500)).hint(WindowHint.VISIBLE.of(false)).build();
+        var window = new WindowBuilder("Example").size(new Point2D(500, 500)).visible(false).build();
         window.close();
     }
     @Test

@@ -20,6 +20,10 @@ public class GLFWLibrary {
         }
         PROVIDER = new SharedLibraryProvider(name);
     }
+    public static final int GLFW_REFRESH_RATE = 0x0002100F;
+    public static final int GLFW_RED_BITS = 0x00021001;
+    public static final int GLFW_GREEN_BITS = 0x00021002;
+    public static final int GLFW_BLUE_BITS = 0x00021003;
     public static final int GLFW_VISIBLE = 0x00020004;
     public static final int GLFW_RESIZABLE = 0x00020003;
     public static final int GLFW_DECORATED = 0x00020005;
@@ -56,5 +60,6 @@ public class GLFWLibrary {
     public static final UnoMethod<Long, Long> glfwGetVideoMode = PROVIDER.getMethod("glfwGetVideoMode", ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG);
     public static final UnoMethod<Integer, MemorySegment> glfwGetError = PROVIDER.getMethod("glfwGetError", ValueLayout.JAVA_INT, ValueLayout.ADDRESS);
     public static final TriVoidMethod<MemorySegment, MemorySegment, MemorySegment> glfwGetVersion = PROVIDER.getVoidMethod("glfwGetVersion", ValueLayout.ADDRESS, ValueLayout.ADDRESS, ValueLayout.ADDRESS);
+    public static final TriVoidMethod<Long, Integer, Integer> glfwSetWindowAttrib = PROVIDER.getVoidMethod("glfwSetWindowAttrib", ValueLayout.JAVA_LONG, ValueLayout.JAVA_INT, ValueLayout.JAVA_INT);
 
 }
