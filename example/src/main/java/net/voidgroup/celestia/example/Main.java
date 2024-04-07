@@ -1,9 +1,9 @@
 package net.voidgroup.celestia.example;
 
-import net.voidgroup.celestia.Celestia;
+import net.voidgroup.celestia.glfw.GLFW;
 
 public class Main {
-    public static void main(String[] args) {
-        Celestia.test("testing text");
+    public static void main() {
+        GLFW.initialise().close();
     }
 }
