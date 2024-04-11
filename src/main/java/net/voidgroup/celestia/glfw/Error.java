@@ -25,7 +25,11 @@ public record Error(ErrorCode code, String message) {
         VersionUnavailable(GLFWConstants.GLFW_VERSION_UNAVAILABLE),
         PlatformError(GLFWConstants.GLFW_PLATFORM_ERROR),
         FormatUnavailable(GLFWConstants.GLFW_FORMAT_UNAVAILABLE),
-        NoWindowContext(GLFWConstants.GLFW_NO_WINDOW_CONTEXT);
+        NoWindowContext(GLFWConstants.GLFW_NO_WINDOW_CONTEXT),
+        CursorUnavailable(GLFWConstants.GLFW_CURSOR_UNAVAILABLE),
+        FeatureUnavailable(GLFWConstants.GLFW_FEATURE_UNAVAILABLE),
+        FeatureUnimplemented(GLFWConstants.GLFW_FEATURE_UNIMPLEMENTED),
+        PlatformUnavailable(GLFWConstants.GLFW_PLATFORM_UNAVAILABLE);
         private final int id;
         public static ErrorCode fromId(int id) {
             return Arrays.stream(ErrorCode.values()).filter(code -> code.id == id).findFirst().orElse(null);

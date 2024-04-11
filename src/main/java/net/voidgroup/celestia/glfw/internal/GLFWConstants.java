@@ -12,6 +12,10 @@ public class GLFWConstants {
     public static final int GLFW_PLATFORM_ERROR = 0x00010008;
     public static final int GLFW_FORMAT_UNAVAILABLE = 0x00010009;
     public static final int GLFW_NO_WINDOW_CONTEXT = 0x0001000A;
+    public static final int GLFW_CURSOR_UNAVAILABLE = 0x0001000B;
+    public static final int GLFW_FEATURE_UNAVAILABLE = 0x0001000C;
+    public static final int GLFW_FEATURE_UNIMPLEMENTED = 0x0001000D;
+    public static final int GLFW_PLATFORM_UNAVAILABLE = 0x0001000E;
 
     public static final int GLFW_ANY_PLATFORM = 0x00060000;
     public static final int GLFW_PLATFORM_WIN32 = 0x00060001;
