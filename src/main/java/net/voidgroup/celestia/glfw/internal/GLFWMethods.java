@@ -1,6 +1,7 @@
 package net.voidgroup.celestia.glfw.internal;
 
 import net.voidgroup.celestia.glfw.Error;
+import net.voidgroup.celestia.glfw.GLFWHint;
 import net.voidgroup.celestia.glfw.Version;
 import net.voidgroup.celestia.internal.SharedLibraryLoader;
 
@@ -31,6 +32,14 @@ public class GLFWMethods {
     public static boolean glfwInit() {
         try {
             return ((int) _glfwInit.invoke()) == 1;
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+    private static final MethodHandle _glfwInitHint = linker.downcallHandle(loader.getMethod("glfwInitHint"), FunctionDescriptor.ofVoid(ValueLayout.JAVA_INT, ValueLayout.JAVA_INT));
+    public static void glfwInitHint(GLFWHint hint, int value) {
+        try {
+            _glfwInitHint.invoke(hint.id, value);
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
