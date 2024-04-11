@@ -15,15 +15,15 @@ public class GLFW implements AutoCloseable {
         instance = new GLFW();
         return instance;
     }
+    public static void setPlatform(Platform platform) {
+        GLFWMethods.glfwInitHint(GLFWHint.Platform, platform.getId());
+    }
     private GLFW() {
         LOGGER.log(Level.CONFIG, "Using GLFW version: {0}", getVersionString());
         var version = getVersion();
         if(!version.compareCompatible(EXPECTED_VERSION))
             LOGGER.log(Level.SEVERE, "Current GLFW version is unsupported, expected: {0}, found: {1}", new Version[]{EXPECTED_VERSION, version});
-        GLFWMethods.glfwSetErrorCallback(err -> {
-            LOGGER.log(Level.SEVERE, "Native error occurred: {0}", err);
-            throw new RuntimeException();
-        });
+        GLFWMethods.glfwSetErrorCallback(err -> LOGGER.log(Level.SEVERE, "Native error occurred: {0}", err));
         if(!GLFWMethods.glfwInit())
             throw new RuntimeException(GLFWMethods.glfwGetError().toString());
     }
