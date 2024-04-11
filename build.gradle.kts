@@ -1,6 +1,7 @@
 plugins {
     id("java-library")
     id("maven-publish")
+    id("eclipse")
 }
 allprojects {
     tasks.withType<JavaCompile> {
@@ -17,6 +18,16 @@ tasks.test {
 }
 java {
     withSourcesJar()
+}
+eclipse {
+    jdt {
+        file {
+            withProperties {
+                this["org.eclipse.jdt.core.compiler.problem.enablePreviewFeatures"]= "enabled"
+                this["org.eclipse.jdt.core.compiler.problem.reportPreviewFeatures"]= "ignore"
+            }
+        }
+    }
 }
 publishing {
     publications {
