@@ -18,6 +18,24 @@ public class GLFW implements AutoCloseable {
     public static void setPlatform(Platform platform) {
         GLFWMethods.glfwInitHint(GLFWHint.Platform, platform.getId());
     }
+    public static void setJoystickHatButtons(boolean enabled) {
+        GLFWMethods.glfwInitHint(GLFWHint.JoystickHatButtons, enabled);
+    }
+    public static void setAnglePlatform(AnglePlatform platform) {
+        GLFWMethods.glfwInitHint(GLFWHint.AnglePlatformType, platform.getId());
+    }
+    public static void setChdirResources(boolean enabled) {
+        GLFWMethods.glfwInitHint(GLFWHint.CocoaChdirResources, enabled);
+    }
+    public static void setMenubar(boolean enabled) {
+        GLFWMethods.glfwInitHint(GLFWHint.CocoaMenubar, enabled);
+    }
+    public static void setXcbVulkanSurface(boolean enabled) {
+        GLFWMethods.glfwInitHint(GLFWHint.X11XCBVulkanSurface, enabled);
+    }
+    public static void setLibdecor(boolean enabled) {
+        GLFWMethods.glfwInitHint(GLFWHint.WaylandLibdecor, enabled);
+    }
     private GLFW() {
         LOGGER.log(Level.CONFIG, "Using GLFW version: {0}", getVersionString());
         var version = getVersion();

@@ -31,7 +31,7 @@ public class GLFWMethods {
 
     public static boolean glfwInit() {
         try {
-            return ((int) _glfwInit.invoke()) == 1;
+            return ((int) _glfwInit.invoke()) == GLFWConstants.GLFW_TRUE;
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
@@ -43,6 +43,9 @@ public class GLFWMethods {
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
+    }
+    public static void glfwInitHint(GLFWHint hint, boolean value) {
+        glfwInitHint(hint, value ? GLFWConstants.GLFW_TRUE : GLFWConstants.GLFW_FALSE);
     }
 
     private static final MethodHandle _glfwGetError = linker.downcallHandle(loader.getMethod("glfwGetError"), FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.ADDRESS));
