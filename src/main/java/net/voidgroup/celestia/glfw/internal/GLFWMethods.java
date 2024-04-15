@@ -3,6 +3,7 @@ package net.voidgroup.celestia.glfw.internal;
 import net.voidgroup.celestia.glfw.Error;
 import net.voidgroup.celestia.glfw.GLFWHint;
 import net.voidgroup.celestia.glfw.Version;
+import net.voidgroup.celestia.glfw.window.WindowHint;
 import net.voidgroup.celestia.internal.SharedLibraryLoader;
 
 import java.lang.foreign.*;
@@ -126,6 +127,43 @@ public class GLFWMethods {
     public static String glfwGetVersionString() {
         try {
             return ((MemorySegment) _glfwGetVersionString.invoke()).reinterpret(512).getUtf8String(0);
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private static final MethodHandle _glfwDefaultWindowHints = linker.downcallHandle(loader.getMethod("glfwDefaultWindowHints"), FunctionDescriptor.ofVoid());
+    public static void glfwDefaultWindowHints() {
+        try {
+            _glfwDefaultWindowHints.invoke();
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private static final MethodHandle _glfwWindowHint = linker.downcallHandle(loader.getMethod("glfwWindowHint"), FunctionDescriptor.ofVoid(ValueLayout.JAVA_INT, ValueLayout.JAVA_INT));
+    public static void glfwWindowHint(WindowHint hint, int value) {
+        try {
+            _glfwWindowHint.invoke(hint.id, value);
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static void glfwWindowHint(WindowHint hint, boolean value) {
+        glfwWindowHint(hint, value ? GLFWConstants.GLFW_TRUE : GLFWConstants.GLFW_FALSE);
+    }
+    private static final MethodHandle _glfwWindowHintString = linker.downcallHandle(loader.getMethod("glfwWindowHintString"), FunctionDescriptor.ofVoid(ValueLayout.JAVA_INT, ValueLayout.ADDRESS));
+    public static void glfwWindowHintString(WindowHint hint, String value) {
+        try {
+            var valueMemory = Arena.ofAuto().allocateUtf8String(value);
+            _glfwWindowHintString.invoke(hint.id, valueMemory);
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private static final MethodHandle _glfwCreateWindow = linker.downcallHandle(loader.getMethod("glfwCreateWindow"), FunctionDescriptor.of(ValueLayout.ADDRESS, ValueLayout.JAVA_INT, ValueLayout.JAVA_INT, ValueLayout.ADDRESS, ValueLayout.ADDRESS, ValueLayout.ADDRESS));
+    public static MemorySegment glfwCreateWindow(int width, int height, String title, MemorySegment monitor, MemorySegment shared) {
+        try {
+            var titleMemory = Arena.ofAuto().allocateUtf8String(title);
+            return (MemorySegment) _glfwCreateWindow.invoke(width, height, titleMemory, monitor, shared);
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
