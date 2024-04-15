@@ -16,7 +16,7 @@ public class GLFW implements AutoCloseable {
         return instance;
     }
     public static void setPlatform(Platform platform) {
-        GLFWMethods.glfwInitHint(GLFWHint.Platform, platform.getId());
+        GLFWMethods.glfwInitHint(GLFWHint.Platform, platform.id);
     }
     public static void setJoystickHatButtons(boolean enabled) {
         GLFWMethods.glfwInitHint(GLFWHint.JoystickHatButtons, enabled);
